@@ -5,8 +5,9 @@ import { Form } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 
 import type { DsfrRadioButtonProps } from '@gouvminint/vue-dsfr'
-import { useFormStore } from '@/stores/form-store'
 import ValidatedDsfrSelect from '@/components/ValidatedDsfrSelect.vue'
+import { apiClient } from '@/api/api-client'
+import { useFormStore } from '@/stores/form-store'
 
 // start of code which should be moved to a separate file
 const loginDataSchema = z.object({
@@ -25,6 +26,7 @@ const strongEnoughPasswordRules = {
 } as const
 
 const signupDataSchema = z.object({
+  fileName: z.string({ required_error: 'Le fichier est requis' }).min(1, { message: 'Le fichier est requis' }),
   email: z.string({ required_error: 'L’adresse courriel est requise' })
     .email({ message: 'L’adresse courriel n’est pas valide' }).default('')
     .refine(value => value.endsWith('@interieur.gouv.fr'), { message: 'L’adresse courriel doit se terminer par @interieur.gouv.fr' }),
@@ -36,6 +38,7 @@ const signupDataSchema = z.object({
         }
       }
     }),
+  phone: z.string().regex(/\+[0-9 ]+/, 'Le numéro de téléphone doit être au format +33XXXXXXXXX'),
   role: z.enum(['user', 'admin'], { required_error: 'Le rôle est requis' }),
   accept: z.boolean().refine(value => value, { message: 'Vous devez accepter les conditions' }),
   abonnement: z.enum(['mensuel', 'annuel'], { required_error: 'Vous devez choisir un abonnement' }),
@@ -59,15 +62,21 @@ const formStates = [
 const formState = ref<keyof typeof schemas>('signup')
 const validationSchema = computed(() => toTypedSchema(schemas[formState.value]))
 
-// const formStore = useFormStore()
-const formStore = ref({ email: '', password: '' })
+const formStore = useFormStore()
+// const formStore = ref({ email: '', password: '', phone: '+33641414141' })
 
 const roleOptions = [
   { value: 'user', text: 'utilisateur' },
   { value: 'admin', text: 'administrateur' },
 ]
 
-const accept = ref<boolean>()
+const fileName = ref<string>()
+
+const accept = ref(false)
+const phone = computed({
+  get: () => formStore.phone,
+  set: value => formStore.phone = value,
+})
 
 const acceptErrorMessage = computed(() => accept.value ? '' : 'Vous devez accepter les conditions')
 
@@ -84,9 +93,22 @@ const abonnementOptions = [
   },
 ]
 
-function onSubmit() {
-  console.log('submit')
+function saveFile(fileName) {
+  console.log('saveFile', fileName)
 }
+
+function onSubmit() {
+  apiClient.createUser({
+    email: formStore.value.email,
+    password: formStore.value.password,
+    role: formStore.value.role as Role,
+    abonnement: formStore.value.abonnement as Abonnement,
+  })
+}
+
+onMounted(() => {
+  fileName.value = 'test.csv'
+})
 </script>
 
 <template>
@@ -103,6 +125,23 @@ function onSubmit() {
       :validation-schema="validationSchema"
       @submit.prevent="onSubmit"
     >
+      <div>
+        <ValidatedTelInput
+          v-model="phone"
+          name="phone"
+          label="Numéro de téléphone"
+          @update:full-number="formStore.phone = $event"
+        />
+      </div>
+      <!-- <p>
+        <ValidatedDsfrFileInput
+          name="fileName"
+          label="Importer un fichier :"
+          hint="Le fichier doit être au format CSV"
+          :model-value="fileName"
+          @update:model-value="saveFile($event)"
+        />
+      </p> -->
       <p>
         <ValidatedDsfrInput
           v-model="formStore.email"

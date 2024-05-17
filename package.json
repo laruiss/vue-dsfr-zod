@@ -8,24 +8,31 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
+    "test:e2e": "playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "gen:openapi": "vite-node build-openapi.ts",
+    "gen:zodios": "openapi-zod-client './openapi-docs.yml' -o './src/api/openapi-client.ts'"
   },
   "dependencies": {
     "@gouvfr/dsfr": "1.11.0",
     "@gouvminint/vue-dsfr": "^5.10.3",
     "@vee-validate/zod": "^4.12.6",
     "@zodios/core": "^10.9.6",
+    "axios": "^1.6.8",
     "oh-vue-icons": "1.0.0-rc3",
     "pinia": "^2.1.7",
     "vee-validate": "^4.12.6",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
+    "vue-tel-input": "^9.1.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.8.3",
+    "@asteasolutions/zod-to-openapi": "^7.0.0",
+    "@playwright/test": "^1.44.0",
     "@rushstack/eslint-patch": "^1.7.2",
     "@tsconfig/node20": "^20.1.2",
     "@types/jsdom": "^21.1.6",
@@ -36,14 +43,22 @@
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
+    "express": "^4.19.2",
     "jsdom": "^24.0.0",
+    "msw": "^2.3.0",
     "npm-run-all2": "^6.1.2",
+    "openapi-zod-client": "^1.18.1",
+    "playwright": "^1.44.0",
+    "playwright-msw": "^3.0.1",
+    "swagger-ui-express": "^5.0.0",
     "typescript": "~5.3.3",
     "unocss": "^0.58.6",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
     "vite": "^5.1.6",
+    "vite-node": "^1.5.2",
     "vitest": "^1.4.0",
-    "vue-tsc": "^2.0.6"
+    "vue-tsc": "^2.0.6",
+    "yaml": "^2.4.1"
   }
 }

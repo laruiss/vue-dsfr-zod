@@ -33,6 +33,7 @@ const logoText = ['Ministère', 'de l’intérieur', 'et des Outre-mer']
   </DsfrHeader>
 
   <main class="fr-container mt-4">
+    <UserList />
     <RouterView />
   </main>
 </template>

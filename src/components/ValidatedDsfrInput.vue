@@ -42,7 +42,7 @@ function onChange(value: string) {
   <DsfrInputGroup
     :name="name"
     :model-value="inputValue"
-    type="inputType"
+    :type="type"
     :label="label"
     label-visible
     :placeholder="placeholder"

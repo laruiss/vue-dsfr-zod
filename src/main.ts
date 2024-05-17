@@ -1,5 +1,7 @@
 import './assets/main.css'
 
+import 'vue-tel-input/vue-tel-input.css'
+
 import 'uno.css'
 
 import '@gouvfr/dsfr/dist/dsfr.min.css'
@@ -15,9 +17,7 @@ import * as icons from './icons'
 
 addIcons(...Object.values(icons))
 
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
+createApp(App)
+  .use(createPinia())
+  .use(router)
+  .mount('#app')

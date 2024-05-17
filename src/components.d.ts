@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     DsfrAlert: typeof import('@gouvminint/vue-dsfr')['DsfrAlert']
     DsfrButton: typeof import('@gouvminint/vue-dsfr')['DsfrButton']
+    DsfrFileUpload: typeof import('@gouvminint/vue-dsfr')['DsfrFileUpload']
     DsfrHeader: typeof import('@gouvminint/vue-dsfr')['DsfrHeader']
     DsfrInputGroup: typeof import('@gouvminint/vue-dsfr')['DsfrInputGroup']
     DsfrNavigation: typeof import('@gouvminint/vue-dsfr')['DsfrNavigation']
@@ -18,9 +19,12 @@ declare module 'vue' {
     DsfrSelect: typeof import('@gouvminint/vue-dsfr')['DsfrSelect']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UserList: typeof import('./components/UserList.vue')['default']
     ValidatedDsfrCheckbox: typeof import('./components/ValidatedDsfrCheckbox.vue')['default']
+    ValidatedDsfrFileInput: typeof import('./components/ValidatedDsfrFileInput.vue')['default']
     ValidatedDsfrInput: typeof import('./components/ValidatedDsfrInput.vue')['default']
     ValidatedDsfrRadioButtonSet: typeof import('./components/ValidatedDsfrRadioButtonSet.vue')['default']
     ValidatedDsfrSelect: typeof import('./components/ValidatedDsfrSelect.vue')['default']
+    ValidatedTelInput: typeof import('./components/ValidatedTelInput.vue')['default']
   }
 }
